@@ -1,0 +1,133 @@
+updateDSPassword.py
+
+DomainName = "testdomainl"
+
+ADMINUrl = "t3://testdomainl:7001"
+
+ADMINuser = "weblogic"
+
+ADMINpassword = "******"
+
+mainDSName = "cor_admin"
+
+newDSPassword = "******"
+
+print ' --- Connecting to Admin --- '
+
+print ' '
+
+connect(ADMINuser,ADMINpassword,ADMINUrl)
+
+print '--- Connected Successfully ---'
+
+print ' '
+
+edit()
+
+startEdit()
+
+cd('JDBCSystemResources')
+
+pwd()
+
+print '--- Listing available data sources ---'
+
+ls()
+
+allDS=cmo.getJDBCSystemResources()
+
+for tmpDS in allDS:
+
+               dsName=tmpDS.getName();
+
+               print 'DataSource Name: ', dsName
+
+               print ' '
+
+               print ' '
+
+               if  mainDSName == dsName:
+
+                    print 'Changing Password for DataSource ', dsName
+
+                    cd('/JDBCSystemResources/'+dsName+'/JDBCResource/'+dsName+'/JDBCDriverParams/'+dsName)
+
+                    print('/JDBCSystemResources/'+dsName+'/JDBCResource/'+dsName+'/JDBCDriverParams/'+dsName)
+
+                    set('Password', newDSPassword)
+
+                    print(" --- Password has been Changed Successfully for DataSource: ", dsName)
+
+                    print ('')
+
+save()
+
+activate()
+
+disconnect()
+
+exit()
+
+./wlst.sh updateDSPassword.py
+
+==========================https://www.learn-it-with-examples.com/middleware/weblogic/weblogic-scripting-tool/target-untarget-weblogic-data-source.html
+- To target data source on a server via WLST:
+
+edit()
+startEdit()
+
+cd("/JDBCSystemResources/[Datasource Name]")
+jdbcDS=cmo
+cd("/Servers/[Server Name]") //server to be targeted on.target=cmo 
+jdbcDS.addTarget(target)
+
+save()
+activate()
+- To untarget data source via WLST:
+
+edit()
+startEdit()
+
+cd("/JDBCSystemResources/[Datasource Name]")
+set('Targets',jarray.array([], ObjectName))
+
+save()
+
+=======================
+###########################################################################
+#
+#    This wlst script shows you how to target/ untarget 
+#    a WebLogic Data Source
+#    Copyright (c) 2015 - 2017 by Tomoiu Paul Catalin, All Rights Reserved.
+#
+###########################################################################
+ 
+connect('weblogic','weblogic1', 't3://localhost:7001')
+print ''
+print '======================================================'
+print 'The script has been connected to the Admin Server'
+print '======================================================'
+print ''
+ 
+edit()
+startEdit()
+ 
+# Untarget an Oracle WebLogic Data Source on an Oracle WebLogic Managed Server
+# myDataSource1 = Data Source name
+ 
+cd("/JDBCSystemResources/myDataSource1")
+set('Targets',jarray.array([], ObjectName))
+ 
+#Target an Oracle WebLogic Data Source on an Oracle WebLogic Managed Server
+# MServer1 = Managed Server name
+ 
+jdbcDS1=cmo
+cd("/Servers/MServer1")
+target=cmo  
+jdbcDS1.addTarget(target)
+ 
+save()
+activate()
+ 
+ 
+# This is the end of the script
